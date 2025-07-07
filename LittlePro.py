@@ -39,7 +39,7 @@ presentPositionAddr = 132
 portHandler = PortHandler(DEVICENAME)
 packetHandler = PacketHandler(PROTOCOL_VERSION)
 
-from DFRobot_RaspberryPi_Expansion_Board import DFRobot_Expansion_Board_IIC as Board
+from DF import DFRobot_Expansion_Board_IIC as Board
 
 board = Board(1, 0x10)    # Select i2c bus 1, set address to 0x10
 
