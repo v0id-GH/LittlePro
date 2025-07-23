@@ -1,4 +1,5 @@
-import os, math, time
+import os, math, time, adafruit_tcs34725
+import board as bd
 from dynamixel_sdk import *
 
 if os.name == 'nt':
@@ -17,7 +18,7 @@ else:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
         return ch
 
-motors_ID = [1,2] #1 - left, 2 - right
+motors_ID = [0,1] #0 - left, 1 - right
 sensor_max_value = 1000 #1000 - white | 100-300 - black
 
 #for direct turn:
@@ -667,7 +668,6 @@ def motor_position_turn(speed, position):
 def motor_degrees_turn(speed, degrees):
 	motor_position_turn(speed, give_degrees_turn(degrees)-55)
 
-
 def get_sensor_raw(sensorPort):
 
 	board_detect()    # If you forget address you had set, use this to detected them, must have class instance
@@ -704,3 +704,114 @@ def get_sensor_value(sensorPort):
 	else:
 		return value
 		
+
+
+#New:
+
+i2c = bd.I2C()
+sensor = adafruit_tcs34725.TCS34725(i2c)
+sensor.integration_time = 100  # In milliseconds
+
+def get_rawRGB_value():
+	r, g, b, c = sensor.color_raw
+	#print(f"RGB: R={r}, G={g}, B={b}, Clear={c}")
+	return r, g, b, c
+
+def get_RGB_value():
+	r, g, b, c = get_rawRGB_value()
+	
+	#Black
+	if r < 100 and g < 100 and b < 100:
+		r = 0
+		g = 0
+		b = 0
+		color = 'Black'
+
+		return r, g, b, color
+
+	#White 
+	elif r > 500 and g > 500 and b > 500:
+		r = 255
+		g = 255
+		b = 255
+		color = 'White'
+
+		return r, g, b, color
+		
+	#Red
+	elif r > b and r > g and c < 1000:
+		r = 255
+		g = 0
+		b = 0
+		color = 'Red'
+		
+		return r, g, b, color
+	
+	#Yellow
+	elif r > b and r > g and c > 1000:
+		r = 255
+		g = 255
+		b = 0
+		color = 'Yellow'
+
+		return r, g, b, color
+
+	#Green
+	elif g > r + b:
+		g = 255
+		r = 0
+		b = 0
+		color = 'Green'
+
+		return r, g, b, color 
+
+	#Blue
+	elif b > g and b > r:
+		b = 255
+		r = 0
+		g = 0
+		color = 'Blue'
+
+		return r, g, b, color
+		
+	else:
+		print('Error')
+		quit()
+
+def get_HSV_value():
+	r, g, b, color = get_RGB_value()
+
+	r /= 255
+	g /= 255
+	b /= 255
+
+	maximun = max(r,g,b)
+	minimum = min(r,g,b)
+
+	v = maximun * 100
+
+	if minimum == maximun:
+		return 0, 0, v
+
+	diff = maximun - minimum
+
+	if r == maximun:
+		h = (g - b) / diff
+
+	elif g == maximun:
+		h = 2 + (b - r) / diff
+
+	else:
+		h = 4 + (r - g) / diff
+
+	h *= 60 
+	s = diff / maximun * 100
+
+	return h, s, v
+
+def get_Color_value():
+	r, g, b, color = get_RGB_value()
+	return color
+	
+
+
