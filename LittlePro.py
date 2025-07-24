@@ -67,7 +67,7 @@ def print_board_status():
 def open_port():
 	if portHandler.openPort():
 		pass
-		print("Succeeded to open the port")
+		#print("Succeeded to open the port")
 	else:
 		print("Failed to open the port")
 		print("Press any key to terminate...")
@@ -78,7 +78,7 @@ def open_port():
 def set_baudrate():
 	if portHandler.setBaudRate(BAUDRATE):
 		pass
-		print("Succeeded to change the baudrate")
+		#print("Succeeded to change the baudrate")
 	else:
 		print("Failed to change the baudrate")
 		print("Press any key to terminate...")
@@ -87,7 +87,7 @@ def set_baudrate():
 
 def close_port():
 	portHandler.closePort()
-	print('Succeeded to close the port')
+	#print('Succeeded to close the port')
 	
 	'''
 	if portHandler.closePort():
@@ -102,36 +102,36 @@ def close_port():
 
 def set_motor_direction(direction):
 	if direction == 1:
-		print('fwd')
+		#print('fwd')
 		dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, motors_ID[0], 10, 1)
-		if dxl_comm_result != COMM_SUCCESS:
-			print('comm err')
-		elif dxl_error != 0:
-			print('err')
-		else: print('motor1: set direction')
+		#if dxl_comm_result != COMM_SUCCESS:
+			#print('comm err')
+		#elif dxl_error != 0:
+			#print('err')
+		#else: print('motor1: set direction')
 		
 		dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, motors_ID[1], 10, 0)
-		if dxl_comm_result != COMM_SUCCESS:
-			print('comm err')
-		elif dxl_error != 0:
-			print('err')
-		else: print('motor2: set direction')
+		#if dxl_comm_result != COMM_SUCCESS:
+			#print('comm err')
+		#elif dxl_error != 0:
+			#print('err')
+		#else: print('motor2: set direction')
 		
 	elif direction == -1:
-		print('bwd')
+		#print('bwd')
 		dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, motors_ID[0], 10, 0)
-		if dxl_comm_result != COMM_SUCCESS:
-			print('comm err')
-		elif dxl_error != 0:
-			print('err')
-		else: print('motor1: set direction')
+		#if dxl_comm_result != COMM_SUCCESS:
+			#print('comm err')
+		#elif dxl_error != 0:
+			#print('err')
+		#else: print('motor1: set direction')
 		
 		dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, motors_ID[1], 10, 1)
-		if dxl_comm_result != COMM_SUCCESS:
-			print('comm err')
-		elif dxl_error != 0:
-			print('err')
-		else: print('motor2: set direction')
+		#if dxl_comm_result != COMM_SUCCESS:
+			#print('comm err')
+		#elif dxl_error != 0:
+			#print('err')
+		#else: print('motor2: set direction')
 	
 	else:
 		print('UNKNW-DIR error')
@@ -139,36 +139,36 @@ def set_motor_direction(direction):
 		
 def set_motor_turn(turn):
 	if turn == 1:
-		print('right')
+		#print('right')
 		dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, motors_ID[0], 10, 0)
-		if dxl_comm_result != COMM_SUCCESS:
-			print('comm err')
-		elif dxl_error != 0:
-			print('err')
-		else: print('motor1: set direction')
+		#if dxl_comm_result != COMM_SUCCESS:
+			#print('comm err')
+		#elif dxl_error != 0:
+			#print('err')
+		#else: print('motor1: set direction')
 		
 		dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, motors_ID[1], 10, 0)
-		if dxl_comm_result != COMM_SUCCESS:
-			print('comm err')
-		elif dxl_error != 0:
-			print('err')
-		else: print('motor2: set direction')
+		#if dxl_comm_result != COMM_SUCCESS:
+			#print('comm err')
+		#elif dxl_error != 0:
+			#print('err')
+		#else: print('motor2: set direction')
 		
 	elif turn == -1:
-		print('left')
+		#print('left')
 		dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, motors_ID[0], 10, 1)
-		if dxl_comm_result != COMM_SUCCESS:
-			print('comm err')
-		elif dxl_error != 0:
-			print('err')
-		else: print('motor1: set direction')
+		#if dxl_comm_result != COMM_SUCCESS:
+			#print('comm err')
+		#elif dxl_error != 0:
+			#print('err')
+		#else: print('motor1: set direction')
 		
 		dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, motors_ID[1], 10, 1)
-		if dxl_comm_result != COMM_SUCCESS:
-			print('comm err')
-		elif dxl_error != 0:
-			print('err')
-		else: print('motor2: set direction')
+		#if dxl_comm_result != COMM_SUCCESS:
+			#print('comm err')
+		#elif dxl_error != 0:
+			#print('err')
+		#else: print('motor2: set direction')
 	
 	else:
 		print('UNKNW-TRN error')
@@ -176,19 +176,19 @@ def set_motor_turn(turn):
 
 def clear_motor_position():
 	dxl_comm_result, dxl_error = packetHandler.clearMultiTurn(portHandler, motors_ID[0])
-	if dxl_comm_result != COMM_SUCCESS:
-		print('comm err')
-	elif dxl_error != 0:
-		print('err')
-	else: print('motor1: cleared')
+	#if dxl_comm_result != COMM_SUCCESS:
+		#print('comm err')
+	#elif dxl_error != 0:
+		#print('err')
+	#else: print('motor1: cleared')
 	cleared_pos1, dxl_comm_result, dxl_error = packetHandler.read4ByteTxRx(portHandler, motors_ID[0], presentPositionAddr)
 	
 	dxl_comm_result, dxl_error = packetHandler.clearMultiTurn(portHandler, motors_ID[1])
-	if dxl_comm_result != COMM_SUCCESS:
-		print('comm err')
-	elif dxl_error != 0:
-		print('err')
-	else: print('motor2: cleared')
+	#if dxl_comm_result != COMM_SUCCESS:
+		#print('comm err')
+	#elif dxl_error != 0:
+		#print('err')
+	#else: print('motor2: cleared')
 	cleared_pos2, dxl_comm_result, dxl_error = packetHandler.read4ByteTxRx(portHandler, motors_ID[1], presentPositionAddr)
 	
 	return cleared_pos1, cleared_pos2
@@ -196,49 +196,49 @@ def clear_motor_position():
 def torque(state):
 	if state:
 		dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, motors_ID[0], torqueAddr, state)
-		if dxl_comm_result != COMM_SUCCESS:
-			print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
-		elif dxl_error != 0:
-			print("%s" % packetHandler.getRxPacketError(dxl_error))
-		else: print('mototr1: torque on')
+		#if dxl_comm_result != COMM_SUCCESS:
+			#print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+		#elif dxl_error != 0:
+			#print("%s" % packetHandler.getRxPacketError(dxl_error))
+		#else: print('mototr1: torque on')
 				
 		dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, motors_ID[1], torqueAddr, state)
-		if dxl_comm_result != COMM_SUCCESS:
-			print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
-		elif dxl_error != 0:
-			print("%s" % packetHandler.getRxPacketError(dxl_error))
-		else: print('mototr2: torque on')
+		#if dxl_comm_result != COMM_SUCCESS:
+			#print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+		#elif dxl_error != 0:
+			#print("%s" % packetHandler.getRxPacketError(dxl_error))
+		#else: print('mototr2: torque on')
 	else:
 		dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, motors_ID[0], torqueAddr, state)
-		if dxl_comm_result != COMM_SUCCESS:
-			print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
-		elif dxl_error != 0:
-			print("%s" % packetHandler.getRxPacketError(dxl_error))
-		else: print('mototr1: torque off')
+		#if dxl_comm_result != COMM_SUCCESS:
+			#print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+		#elif dxl_error != 0:
+			#print("%s" % packetHandler.getRxPacketError(dxl_error))
+		#else: print('mototr1: torque off')
 				
 		dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, motors_ID[1], torqueAddr, state)
-		if dxl_comm_result != COMM_SUCCESS:
-			print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
-		elif dxl_error != 0:
-			print("%s" % packetHandler.getRxPacketError(dxl_error))
-		else: print('mototr2: torque off')
+		#if dxl_comm_result != COMM_SUCCESS:
+			#print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+		#elif dxl_error != 0:
+			#print("%s" % packetHandler.getRxPacketError(dxl_error))
+		#else: print('mototr2: torque off')
 	
 def set_motor_mode(mode):
 	dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, motors_ID[0], 11, mode)
-	if dxl_comm_result != COMM_SUCCESS:
-		print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
-	elif dxl_error != 0:
-		print("%s" % packetHandler.getRxPacketError(dxl_error))
-	else:
-		print('motor1: mode selected')
+	#if dxl_comm_result != COMM_SUCCESS:
+		#print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+	#elif dxl_error != 0:
+		#print("%s" % packetHandler.getRxPacketError(dxl_error))
+	#else:
+		#print('motor1: mode selected')
 		
 	dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, motors_ID[1], 11, mode)	
-	if dxl_comm_result != COMM_SUCCESS:
-		print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
-	elif dxl_error != 0:
-		print("%s" % packetHandler.getRxPacketError(dxl_error))
-	else:
-		print('motor2: mode selected')
+	#if dxl_comm_result != COMM_SUCCESS:
+		#print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+	#elif dxl_error != 0:
+		#print("%s" % packetHandler.getRxPacketError(dxl_error))
+	#else:
+		#print('motor2: mode selected')
 
 #-----------------------------------------------------------------------
 #complex functions:
@@ -310,7 +310,7 @@ def motor_start(speed_1, speed_2):
 
 def motor_stop(force_stop):
 	if force_stop:
-		print('force stop: on')
+		#print('force stop: on')
 		groupSyncWrite = GroupSyncWrite(portHandler, packetHandler, 104, 4) #104 - speed address
 		
 		#parametrs for Syncwrite 
@@ -343,7 +343,7 @@ def motor_stop(force_stop):
 		
 		close_port()
 	else:
-		print('force stop: off')
+		#print('force stop: off')
 		torque(0)
 		
 		close_port()
@@ -357,7 +357,7 @@ def motor_set_velocity(speed):
 	elif dxl_error != 0:
 	    print("%s" % packetHandler.getRxPacketError(dxl_error))
 	else:
-	    print('motor1: velocity sets')
+	    #print('motor1: velocity sets')
 	 
 	dxl_comm_result, dxl_error = packetHandler.write4ByteTxRx(portHandler, motors_ID[1], 112, speed)
 	
@@ -366,7 +366,7 @@ def motor_set_velocity(speed):
 	elif dxl_error != 0:
 	    print("%s" % packetHandler.getRxPacketError(dxl_error))
 	else:
-	    print('motor2: velocity sets')
+	    #print('motor2: velocity sets')
 	
 def motor_position_move(speed, position):
 	
@@ -492,7 +492,7 @@ def motor_position_move(speed, position):
 
 		# Get Dynamixel#2 present position value
 		position2_rightnow = groupSyncRead.getData(motors_ID[1], presentPositionAddr, 4)
-		print('position M1 rightnow: ' + str(position1_rightnow))
+		#print('position M1 rightnow: ' + str(position1_rightnow))
 		
 		time.sleep(0.03)
 		
@@ -651,7 +651,7 @@ def motor_position_turn(speed, position):
 
 		# Get Dynamixel#2 present position value
 		position2_rightnow = groupSyncRead.getData(motors_ID[1], presentPositionAddr, 4)
-		print('position M1 rightnow: ' + str(position1_rightnow))
+		#print('position M1 rightnow: ' + str(position1_rightnow))
 		
 		time.sleep(0.03)
 		
@@ -704,10 +704,7 @@ def get_sensor_value(sensorPort):
 	else:
 		return value
 		
-
-
-#New:
-
+#TCS34725:
 i2c = bd.I2C()
 sensor = adafruit_tcs34725.TCS34725(i2c)
 sensor.integration_time = 100  # In milliseconds
@@ -813,5 +810,4 @@ def get_Color_value():
 	r, g, b, color = get_RGB_value()
 	return color
 	
-
-
+#HMC5883L:
