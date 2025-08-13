@@ -1,4 +1,4 @@
-import os, math, time, adafruit_tcs34725
+import os, math, time, adafruit_tcs34725, smbus
 import board as bd
 from dynamixel_sdk import *
 
@@ -61,6 +61,16 @@ def print_board_status():
   elif board.last_operate_status == board.STA_ERR_SOFT_VERSION:
     print("board status: unsupport board framware version")
 
+def board_init():
+	board_detect()    # If you forget address you had set, use this to detected them, must have class instance
+
+	while board.begin() != board.STA_OK:    # Board begin and check board status
+		#print_board_status()
+		print("board begin faild")
+		time.sleep(0.5)
+	#print("board begin success")
+
+	board.set_adc_enable()
 #-----------------------------------------------------------------------
 #base functions:
 
@@ -69,7 +79,7 @@ def open_port():
 		pass
 		#print("Succeeded to open the port")
 	else:
-		print("Failed to open the port")
+		#print("Failed to open the port")
 		print("Press any key to terminate...")
 		getch()
 		quit()
@@ -103,22 +113,6 @@ def close_port():
 def set_motor_direction(direction):
 	if direction == 1:
 		#print('fwd')
-		dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, motors_ID[0], 10, 1)
-		#if dxl_comm_result != COMM_SUCCESS:
-			#print('comm err')
-		#elif dxl_error != 0:
-			#print('err')
-		#else: print('motor1: set direction')
-		
-		dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, motors_ID[1], 10, 0)
-		#if dxl_comm_result != COMM_SUCCESS:
-			#print('comm err')
-		#elif dxl_error != 0:
-			#print('err')
-		#else: print('motor2: set direction')
-		
-	elif direction == -1:
-		#print('bwd')
 		dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, motors_ID[0], 10, 0)
 		#if dxl_comm_result != COMM_SUCCESS:
 			#print('comm err')
@@ -127,6 +121,22 @@ def set_motor_direction(direction):
 		#else: print('motor1: set direction')
 		
 		dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, motors_ID[1], 10, 1)
+		#if dxl_comm_result != COMM_SUCCESS:
+			#print('comm err')
+		#elif dxl_error != 0:
+			#print('err')
+		#else: print('motor2: set direction')
+		
+	elif direction == -1:
+		#print('bwd')
+		dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, motors_ID[0], 10, 1)
+		#if dxl_comm_result != COMM_SUCCESS:
+			#print('comm err')
+		#elif dxl_error != 0:
+			#print('err')
+		#else: print('motor1: set direction')
+		
+		dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, motors_ID[1], 10, 0)
 		#if dxl_comm_result != COMM_SUCCESS:
 			#print('comm err')
 		#elif dxl_error != 0:
@@ -139,35 +149,35 @@ def set_motor_direction(direction):
 		
 def set_motor_turn(turn):
 	if turn == 1:
-		#print('right')
+		print('right')
 		dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, motors_ID[0], 10, 0)
-		#if dxl_comm_result != COMM_SUCCESS:
-			#print('comm err')
-		#elif dxl_error != 0:
-			#print('err')
+		if dxl_comm_result != COMM_SUCCESS:
+			print('comm err')
+		elif dxl_error != 0:
+			print('err')
 		#else: print('motor1: set direction')
 		
 		dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, motors_ID[1], 10, 0)
-		#if dxl_comm_result != COMM_SUCCESS:
-			#print('comm err')
-		#elif dxl_error != 0:
-			#print('err')
+		if dxl_comm_result != COMM_SUCCESS:
+			print('comm err')
+		elif dxl_error != 0:
+			print('err')
 		#else: print('motor2: set direction')
 		
 	elif turn == -1:
-		#print('left')
+		print('left')
 		dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, motors_ID[0], 10, 1)
-		#if dxl_comm_result != COMM_SUCCESS:
-			#print('comm err')
-		#elif dxl_error != 0:
-			#print('err')
+		if dxl_comm_result != COMM_SUCCESS:
+			print('comm err')
+		elif dxl_error != 0:
+			print('err')
 		#else: print('motor1: set direction')
 		
 		dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, motors_ID[1], 10, 1)
-		#if dxl_comm_result != COMM_SUCCESS:
-			#print('comm err')
-		#elif dxl_error != 0:
-			#print('err')
+		if dxl_comm_result != COMM_SUCCESS:
+			print('comm err')
+		elif dxl_error != 0:
+			print('err')
 		#else: print('motor2: set direction')
 	
 	else:
@@ -196,31 +206,31 @@ def clear_motor_position():
 def torque(state):
 	if state:
 		dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, motors_ID[0], torqueAddr, state)
-		#if dxl_comm_result != COMM_SUCCESS:
-			#print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
-		#elif dxl_error != 0:
-			#print("%s" % packetHandler.getRxPacketError(dxl_error))
+		if dxl_comm_result != COMM_SUCCESS:
+			print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+		elif dxl_error != 0:
+			print("%s" % packetHandler.getRxPacketError(dxl_error))
 		#else: print('mototr1: torque on')
 				
 		dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, motors_ID[1], torqueAddr, state)
-		#if dxl_comm_result != COMM_SUCCESS:
-			#print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
-		#elif dxl_error != 0:
-			#print("%s" % packetHandler.getRxPacketError(dxl_error))
+		if dxl_comm_result != COMM_SUCCESS:
+			print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+		elif dxl_error != 0:
+			print("%s" % packetHandler.getRxPacketError(dxl_error))
 		#else: print('mototr2: torque on')
 	else:
 		dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, motors_ID[0], torqueAddr, state)
-		#if dxl_comm_result != COMM_SUCCESS:
-			#print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
-		#elif dxl_error != 0:
-			#print("%s" % packetHandler.getRxPacketError(dxl_error))
+		if dxl_comm_result != COMM_SUCCESS:
+			print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+		elif dxl_error != 0:
+			print("%s" % packetHandler.getRxPacketError(dxl_error))
 		#else: print('mototr1: torque off')
 				
 		dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, motors_ID[1], torqueAddr, state)
-		#if dxl_comm_result != COMM_SUCCESS:
-			#print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
-		#elif dxl_error != 0:
-			#print("%s" % packetHandler.getRxPacketError(dxl_error))
+		if dxl_comm_result != COMM_SUCCESS:
+			print("%s" % packetHandler.getTxRxResult(dxl_comm_result))
+		elif dxl_error != 0:
+			print("%s" % packetHandler.getRxPacketError(dxl_error))
 		#else: print('mototr2: torque off')
 	
 def set_motor_mode(mode):
@@ -271,7 +281,7 @@ def motor_position_now():
 		
 	return position1_now, position2_now, 
 
-def motor_start(speed_1, speed_2):
+def motor_init():
 	set_baudrate()
 
 	open_port()
@@ -283,10 +293,9 @@ def motor_start(speed_1, speed_2):
 	groupSyncWrite = GroupSyncWrite(portHandler, packetHandler, 104, 4) #104 - speed address
 	
 	torque(1)
-	
-	#parametrs for Syncwrite 
-	parametr_speed1 = [DXL_LOBYTE(DXL_LOWORD(speed_1)), DXL_HIBYTE(DXL_LOWORD(speed_1)), DXL_LOBYTE(DXL_HIWORD(speed_1)), DXL_HIBYTE(DXL_HIWORD(speed_1))]
-	parametr_speed2 = [DXL_LOBYTE(DXL_LOWORD(speed_2)), DXL_HIBYTE(DXL_LOWORD(speed_2)), DXL_LOBYTE(DXL_HIWORD(speed_2)), DXL_HIBYTE(DXL_HIWORD(speed_2))]
+	return groupSyncWrite
+
+def motor_start(parametr_speed1, parametr_speed2):
 	
 	# Add M1 goal speed value to the Syncwrite parameter storage
 	dxl_addparam_result = groupSyncWrite.addParam(motors_ID[0], parametr_speed1)
@@ -357,7 +366,7 @@ def motor_set_velocity(speed):
 	elif dxl_error != 0:
 	    print("%s" % packetHandler.getRxPacketError(dxl_error))
 	else:
-	    #print('motor1: velocity sets')
+	    print('motor1: velocity sets')
 	 
 	dxl_comm_result, dxl_error = packetHandler.write4ByteTxRx(portHandler, motors_ID[1], 112, speed)
 	
@@ -366,7 +375,7 @@ def motor_set_velocity(speed):
 	elif dxl_error != 0:
 	    print("%s" % packetHandler.getRxPacketError(dxl_error))
 	else:
-	    #print('motor2: velocity sets')
+	    print('motor2: velocity sets')
 	
 def motor_position_move(speed, position):
 	
@@ -492,9 +501,9 @@ def motor_position_move(speed, position):
 
 		# Get Dynamixel#2 present position value
 		position2_rightnow = groupSyncRead.getData(motors_ID[1], presentPositionAddr, 4)
-		#print('position M1 rightnow: ' + str(position1_rightnow))
+		print('position M1 rightnow: ' + str(position1_rightnow))
 		
-		time.sleep(0.03)
+		time.sleep(0.04)
 		
 		if position1_rightnow == position1_rightnow_old:
 			print('position M1 is done')
@@ -505,6 +514,16 @@ def motor_position_move(speed, position):
 	torque(0)
 	
 	close_port()
+
+def motor_cantimetr_move(speed, cm):
+	lenght_of_circle=2*3.14*(5.2/2)
+	#print(lenght_of_circle)
+	one_cm = 4096 / lenght_of_circle
+	pos = one_cm * cm
+	motor_position_move(speed, int(pos))
+
+
+	
 
 def give_degrees_turn(degrees):
 	#attitude
@@ -581,7 +600,7 @@ def motor_position_turn(speed, position):
 	# Get Dynamixel#2 present position value
 	position2_now = groupSyncRead.getData(motors_ID[1], presentPositionAddr, 4)
 	
-	print('position M1 now: ' + str(position1_now))
+	#print('position M1 now: ' + str(position1_now))
 	
 	groupSyncRead.clearParam()
 	
@@ -602,7 +621,7 @@ def motor_position_turn(speed, position):
 
 	torque(1)
 	
-	print('goal position M1: ' + str(position1_now+position))
+	#print('goal position M1: ' + str(position1_now+position))
 	#parametrs for Syncwrite 
 	parametr_position1 = [DXL_LOBYTE(DXL_LOWORD(position1_now+position+50)), DXL_HIBYTE(DXL_LOWORD(position1_now+position+50)), DXL_LOBYTE(DXL_HIWORD(position1_now+position+50)), DXL_HIBYTE(DXL_HIWORD(position1_now+position+50))]
 	parametr_position2 = [DXL_LOBYTE(DXL_LOWORD(position2_now+position+50)), DXL_HIBYTE(DXL_LOWORD(position2_now+position+50)), DXL_LOBYTE(DXL_HIWORD(position2_now+position+50)), DXL_HIBYTE(DXL_HIWORD(position2_now+position+50))]
@@ -628,6 +647,8 @@ def motor_position_turn(speed, position):
 	
 	position1_rightnow_old = 0
 	while 1:
+		
+		#print(get_Compass_value())
 		
 		# Syncread present position
 		dxl_comm_result = groupSyncRead.txRxPacket()
@@ -669,16 +690,6 @@ def motor_degrees_turn(speed, degrees):
 	motor_position_turn(speed, give_degrees_turn(degrees)-55)
 
 def get_sensor_raw(sensorPort):
-
-	board_detect()    # If you forget address you had set, use this to detected them, must have class instance
-
-	while board.begin() != board.STA_OK:    # Board begin and check board status
-		#print_board_status()
-		print("board begin faild")
-		time.sleep(0.5)
-	#print("board begin success")
-
-	board.set_adc_enable()
 	
 	if sensorPort == 'A0':
 		value = board.get_adc_value(board.A0)
@@ -688,7 +699,7 @@ def get_sensor_raw(sensorPort):
 		return value
 	elif sensorPort == 'A2':
 		value = board.get_adc_value(board.A2)
-		return value
+		return value-65
 	elif sensorPort == 'A3':
 		value = board.get_adc_value(board.A3)
 		return value
@@ -705,9 +716,9 @@ def get_sensor_value(sensorPort):
 		return value
 		
 #TCS34725:
-i2c = bd.I2C()
-sensor = adafruit_tcs34725.TCS34725(i2c)
-sensor.integration_time = 100  # In milliseconds
+#i2c = bd.I2C()
+#sensor = adafruit_tcs34725.TCS34725(i2c)
+#sensor.integration_time = 100  # In milliseconds
 
 def get_rawRGB_value():
 	r, g, b, c = sensor.color_raw
@@ -811,3 +822,60 @@ def get_Color_value():
 	return color
 	
 #HMC5883L:
+#ADDRESS = 0x1E
+#CONFIG_A = 0x00
+#CONFIG_B = 0x01
+#MODE = 0x02
+#X_MSB = 0x03
+#Z_MSB = 0x05
+#Y_MSB = 0x07
+ 
+bus = smbus.SMBus(1)
+
+def setup():
+    bus.write_byte_data(ADDRESS, CONFIG_A, 0x70)  # Set to 8 samples @ 15Hz
+    bus.write_byte_data(ADDRESS, CONFIG_B, 0x20)  # 1.3 gain LSb / Gauss 1090 (default)
+    bus.write_byte_data(ADDRESS, MODE, 0x00)  # Continuous measurement mode
+ 
+def read_raw_data(addr):
+    # Read raw 16-bit value
+    high = bus.read_byte_data(ADDRESS, addr)
+    low = bus.read_byte_data(ADDRESS, addr+1)
+    
+    # Combine them to get a 16-bit value
+    value = (high << 8) + low
+    if value > 32768:  # Adjust for 2's complement
+        value = value - 65536
+    return value
+ 
+def compute_heading(x, y):
+    # Calculate heading in radians
+    heading_rad = math.atan2(y, x)
+    
+    # Adjust for declination angle (e.g. 0.22 for ~13 degrees)
+    declination_angle = 0.488
+    heading_rad += declination_angle
+    
+    # Correct for when signs are reversed.
+    if heading_rad < 0:
+        heading_rad += 2 * math.pi
+ 
+    # Check for wrap due to addition of declination.
+    if heading_rad > 2 * math.pi:
+        heading_rad -= 2 * math.pi
+ 
+    # Convert radians to degrees for readability.
+    heading_deg = heading_rad * (180.0 / math.pi)
+    
+    return heading_deg
+
+def get_Compass_value():
+    setup()
+	
+    x = read_raw_data(X_MSB)
+    y = read_raw_data(Y_MSB)
+    z = read_raw_data(Z_MSB)
+    
+    heading = compute_heading(x, y)
+    time.sleep(0.01)
+    return heading
