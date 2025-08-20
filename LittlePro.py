@@ -41,8 +41,10 @@ portHandler = PortHandler(DEVICENAME)
 packetHandler = PacketHandler(PROTOCOL_VERSION)
 
 from DF import DFRobot_Expansion_Board_IIC as Board
+from DF import DFRobot_Expansion_Board_Servo as Servo
 
 board = Board(1, 0x10)    # Select i2c bus 1, set address to 0x10
+servo = Servo(board)
 
 def board_detect():
   l = board.detecte()
@@ -113,22 +115,6 @@ def close_port():
 def set_motor_direction(direction):
 	if direction == 1:
 		#print('fwd')
-		dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, motors_ID[0], 10, 0)
-		#if dxl_comm_result != COMM_SUCCESS:
-			#print('comm err')
-		#elif dxl_error != 0:
-			#print('err')
-		#else: print('motor1: set direction')
-		
-		dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, motors_ID[1], 10, 1)
-		#if dxl_comm_result != COMM_SUCCESS:
-			#print('comm err')
-		#elif dxl_error != 0:
-			#print('err')
-		#else: print('motor2: set direction')
-		
-	elif direction == -1:
-		#print('bwd')
 		dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, motors_ID[0], 10, 1)
 		#if dxl_comm_result != COMM_SUCCESS:
 			#print('comm err')
@@ -137,6 +123,22 @@ def set_motor_direction(direction):
 		#else: print('motor1: set direction')
 		
 		dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, motors_ID[1], 10, 0)
+		#if dxl_comm_result != COMM_SUCCESS:
+			#print('comm err')
+		#elif dxl_error != 0:
+			#print('err')
+		#else: print('motor2: set direction')
+		
+	elif direction == -1:
+		#print('bwd')
+		dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, motors_ID[0], 10, 0)
+		#if dxl_comm_result != COMM_SUCCESS:
+			#print('comm err')
+		#elif dxl_error != 0:
+			#print('err')
+		#else: print('motor1: set direction')
+		
+		dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, motors_ID[1], 10, 1)
 		#if dxl_comm_result != COMM_SUCCESS:
 			#print('comm err')
 		#elif dxl_error != 0:
@@ -150,22 +152,6 @@ def set_motor_direction(direction):
 def set_motor_turn(turn):
 	if turn == 1:
 		print('right')
-		dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, motors_ID[0], 10, 0)
-		if dxl_comm_result != COMM_SUCCESS:
-			print('comm err')
-		elif dxl_error != 0:
-			print('err')
-		#else: print('motor1: set direction')
-		
-		dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, motors_ID[1], 10, 0)
-		if dxl_comm_result != COMM_SUCCESS:
-			print('comm err')
-		elif dxl_error != 0:
-			print('err')
-		#else: print('motor2: set direction')
-		
-	elif turn == -1:
-		print('left')
 		dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, motors_ID[0], 10, 1)
 		if dxl_comm_result != COMM_SUCCESS:
 			print('comm err')
@@ -174,6 +160,22 @@ def set_motor_turn(turn):
 		#else: print('motor1: set direction')
 		
 		dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, motors_ID[1], 10, 1)
+		if dxl_comm_result != COMM_SUCCESS:
+			print('comm err')
+		elif dxl_error != 0:
+			print('err')
+		#else: print('motor2: set direction')
+		
+	elif turn == -1:
+		print('left')
+		dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, motors_ID[0], 10, 0)
+		if dxl_comm_result != COMM_SUCCESS:
+			print('comm err')
+		elif dxl_error != 0:
+			print('err')
+		#else: print('motor1: set direction')
+		
+		dxl_comm_result, dxl_error = packetHandler.write1ByteTxRx(portHandler, motors_ID[1], 10, 0)
 		if dxl_comm_result != COMM_SUCCESS:
 			print('comm err')
 		elif dxl_error != 0:
