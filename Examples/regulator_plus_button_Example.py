@@ -5,6 +5,7 @@ import RPi.GPIO as GPIO
 
 lp.board_init()
 
+#Button example:-----------------
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(0,GPIO.IN)
 
@@ -14,6 +15,7 @@ while GPIO.input(0) == GPIO.HIGH:
 	
 lp.time.sleep(1)
 print('Start!') 
+#--------------------------------
 
 lp.groupSyncWrite = lp.motor_init()
 lp.torque(1)
@@ -40,7 +42,6 @@ def regulator_PD(kp, kd, speed):
 	vr = [lp.DXL_LOBYTE(lp.DXL_LOWORD(int(VR))), lp.DXL_HIBYTE(lp.DXL_LOWORD(int(VR))), lp.DXL_LOBYTE(lp.DXL_HIWORD(int(VR))), lp.DXL_HIBYTE(lp.DXL_HIWORD(int(VR)))]
 	return vl,vr
 
-
 def cross_X(speed,kp,kd,cross_black): #0.15 0.2
 
 	SCL, SCR = 0, 0
@@ -55,4 +56,4 @@ def cross_X(speed,kp,kd,cross_black): #0.15 0.2
 
 	lp.motor_cantimetr_move(150,10)
 
-cross_X(100, 0.15,0.2, 1880)
+#cross_X(100, 0.15,0.2, 1880)
